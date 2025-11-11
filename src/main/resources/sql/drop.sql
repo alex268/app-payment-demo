@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS account;
+DROP TABLE IF EXISTS account_config;
+DROP TABLE IF EXISTS saldo;
+DROP TABLE IF EXISTS saldo_config;
+DROP TABLE IF EXISTS saldo_update;
+DROP TABLE IF EXISTS transaction;
+
+
