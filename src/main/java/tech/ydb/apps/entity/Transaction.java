@@ -3,7 +3,6 @@ package tech.ydb.apps.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;
@@ -49,8 +48,8 @@ public class Transaction implements Serializable, Persistable<TransactionKey> {
         this.isNew = false;
     }
 
-    public Transaction(SaldoKey a, SaldoKey b, BigDecimal amount, Instant input, Instant accepted) {
-        this.id = new TransactionKey(a, UUID.randomUUID().toString());
+    public Transaction(String id, SaldoKey a, SaldoKey b, BigDecimal amount, Instant input, Instant accepted) {
+        this.id = new TransactionKey(a, id);
         this.accountB = b.getAccountId();
         this.accPartB = b.getPartNum();
 

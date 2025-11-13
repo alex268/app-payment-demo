@@ -13,6 +13,7 @@ import tech.ydb.apps.entity.SaldoKey;
  * @author Aleksandr Gorshenin
  */
 public class PaymentTask {
+    private final String id;
     private final SaldoKey keyA;
     private final SaldoKey keyB;
     private final BigDecimal amount;
@@ -20,10 +21,15 @@ public class PaymentTask {
     private final Instant input = Instant.now();
     private final CompletableFuture<PaymentResponse> result = new Promise.Completable<>();
 
-    public PaymentTask(SaldoKey keyA, SaldoKey keyB, BigDecimal amount) {
+    public PaymentTask(String id, SaldoKey keyA, SaldoKey keyB, BigDecimal amount) {
+        this.id = id;
         this.keyA = keyA;
         this.keyB = keyB;
         this.amount = amount;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public SaldoKey getKeyA() {

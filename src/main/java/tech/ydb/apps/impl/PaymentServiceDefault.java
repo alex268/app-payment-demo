@@ -89,7 +89,7 @@ public class PaymentServiceDefault implements PaymentService {
             Saldo saldo = saldoRepo.findById(keyA).orElseThrow();
             saldo.updateSaldo(saldo.getAmount().add(payment.negate()));
 
-            Transaction tx = new Transaction(keyA, keyB, payment, task.getInputTs(), accepted);
+            Transaction tx = new Transaction(task.getId(), keyA, keyB, payment, task.getInputTs(), accepted);
             updatesToInsert.add(new SaldoUpdate(keyB, tx, payment));
             transactions.add(tx);
         }

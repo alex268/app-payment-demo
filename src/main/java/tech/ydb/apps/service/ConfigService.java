@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 import org.slf4j.Logger;
@@ -117,7 +118,7 @@ public class ConfigService {
         // Use random saldos
         SaldoKey keyA = a.get(rnd.nextInt(a.size()));
         SaldoKey keyB = b.get(rnd.nextInt(b.size()));
-        return new PaymentTask(keyA, keyB, req.getAmount());
+        return new PaymentTask(UUID.randomUUID().toString(), keyA, keyB, req.getAmount());
     }
 
     public PaymentRequest createRandomPayment() {

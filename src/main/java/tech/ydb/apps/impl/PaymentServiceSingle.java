@@ -70,7 +70,7 @@ public class PaymentServiceSingle implements PaymentService {
             a.updateSaldo(a.getAmount().add(amount.negate()));
             b.updateSaldo(b.getAmount().add(amount));
 
-            newTransactions.add(new Transaction(a.getId(), b.getId(), amount, task.getInputTs(), accepted));
+            newTransactions.add(new Transaction(task.getId(), a.getId(), b.getId(), amount, task.getInputTs(), accepted));
         }
 
         saldoRepo.saveAll(allSaldos); // batched update
