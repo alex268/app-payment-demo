@@ -71,12 +71,11 @@ public class PaymentServiceDefault implements PaymentService {
         List<SaldoUpdate> updatesToInsert = new ArrayList<>();
         List<SaldoUpdate> updatesToDelete = new ArrayList<>();
 
-        // Prefetch all accounts to cache them
-        Iterable<Saldo> allSaldos = saldoRepo.findAllById(saldoIds); // SELECT
+        Iterable<Saldo> allSaldos = saldoRepo.findAllById(saldoIds);
 
         // execute all delayed updates
         Instant listBefore = accepted.minusMillis(saldoShiftMs);
-        for (SaldoUpdate up: updatesRepo.listAllCreatedBefore(saldoIds, listBefore)) { // SELECT
+        for (SaldoUpdate up: updatesRepo.findAllBySaldoAndCreatedBefore(saldoIds, listBefore)) {
             Saldo saldo = saldoRepo.findById(up.getId().getSaldoKey()).orElseThrow();
             saldo.updateSaldo(saldo.getAmount().add(up.getAmount()));
             updatesToDelete.add(up);
@@ -101,8 +100,20 @@ public class PaymentServiceDefault implements PaymentService {
         updatesRepo.saveAll(updatesToInsert);
     }
 
-    // UPDATE
-    // INSERT
-    // DELETE
-    // INSERT
+    @Override
+    @Transactional
+    @YdbRetryable
+    public void completeSaldoUpdates() {
+        List<SaldoUpdate> updatesToDelete = new ArrayList<>();
+
+        Iterable<Saldo> allSaldos = saldoRepo.findAll();
+        for (SaldoUpdate up: updatesRepo.findAll()) {
+            Saldo saldo = saldoRepo.findById(up.getId().getSaldoKey()).orElseThrow();
+            saldo.updateSaldo(saldo.getAmount().add(up.getAmount()));
+            updatesToDelete.add(up);
+        }
+
+        saldoRepo.saveAll(allSaldos);
+        updatesRepo.deleteAll(updatesToDelete);
+    }
 }

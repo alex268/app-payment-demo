@@ -58,6 +58,11 @@ public class PaymentServiceFake implements PaymentService {
         }
     }
 
+    @Override
+    public void completeSaldoUpdates() {
+        // Nothing
+    }
+
 //    @PreDestroy
 //    public void close() {
 //        System.out.println("TOTAL = " + total.longValue());

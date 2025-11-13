@@ -92,6 +92,9 @@ public class PaymentMachine {
         processors.values().forEach(Processor::stop);
         processors.values().forEach(Processor::join);
         processors.clear();
+
+        logger.info("finish all saldo updates");
+        paymentService.completeSaldoUpdates();
     }
 
     public void registerTask(PaymentTask task) {

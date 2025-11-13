@@ -16,4 +16,6 @@ public interface PaymentService {
     String findProcessor(SaldoKey key);
 
     void executePayments(Instant accepted, List<PaymentTask> batch);
+
+    void completeSaldoUpdates();
 }

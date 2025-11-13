@@ -76,4 +76,9 @@ public class PaymentServiceSingle implements PaymentService {
         saldoRepo.saveAll(allSaldos); // batched update
         transactionRepo.saveAll(newTransactions); // batched insert
     }
+
+    @Override
+    public void completeSaldoUpdates() {
+        // Nothing
+    }
 }
