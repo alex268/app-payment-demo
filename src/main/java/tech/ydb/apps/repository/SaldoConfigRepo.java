@@ -1,6 +1,6 @@
 package tech.ydb.apps.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import tech.ydb.apps.entity.SaldoConfig;
 import tech.ydb.apps.entity.SaldoKey;
@@ -9,6 +9,6 @@ import tech.ydb.apps.entity.SaldoKey;
  *
  * @author Aleksandr Gorshenin
  */
-public interface SaldoConfigRepo extends CrudRepository<SaldoConfig, SaldoKey> {
+public interface SaldoConfigRepo extends JpaRepository<SaldoConfig, SaldoKey> {
 
 }
