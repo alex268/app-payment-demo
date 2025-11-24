@@ -44,6 +44,7 @@ public class AppMetrics {
             "app.payment.latency",
 //            "app.exec.latency",
             "app.tx.retries",
+            "app.tx.archived",
     };
 
     @Bean

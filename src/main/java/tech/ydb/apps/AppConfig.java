@@ -17,6 +17,8 @@ public class AppConfig {
     private final int testRps;
     private final int batchMaxSize;
     private final int saldoShiftMs;
+    private final int archiveThreadsCount;
+    private final int archiveShiftSeconds;
 
     public AppConfig(
             @Name("connection") String connection,
@@ -24,7 +26,9 @@ public class AppConfig {
             @Name("workloadDuration") int workloadDuration,
             @Name("testRps") int testRps,
             @Name("batchMaxSize") int batchMaxSize,
-            @Name("saldoShiftMs") int saldoShiftMs
+            @Name("saldoShiftMs") int saldoShiftMs,
+            @Name("archiveThreadsCount") int archiveThreadsCount,
+            @Name("archiveShiftSeconds") int archiveShiftSeconds
     ) {
         this.connection = connection;
         this.threadsCount = threadsCount <= 0 ? Runtime.getRuntime().availableProcessors() : threadsCount;
@@ -32,6 +36,8 @@ public class AppConfig {
         this.testRps = testRps;
         this.batchMaxSize = batchMaxSize;
         this.saldoShiftMs = saldoShiftMs;
+        this.archiveThreadsCount = archiveThreadsCount;
+        this.archiveShiftSeconds = archiveShiftSeconds;
     }
 
     public String getConnection() {
@@ -56,5 +62,13 @@ public class AppConfig {
 
     public int getSaldoShiftMs() {
         return saldoShiftMs;
+    }
+
+    public int getArchiveThreadsCount() {
+        return archiveThreadsCount;
+    }
+
+    public int getArchiveShiftSeconds() {
+        return archiveShiftSeconds;
     }
 }

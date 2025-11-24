@@ -18,7 +18,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+import tech.ydb.apps.service.ArchiveMachine;
 import tech.ydb.apps.service.ConfigService;
 import tech.ydb.apps.service.PaymentMachine;
 import tech.ydb.apps.service.PaymentWebResource;
@@ -31,6 +33,7 @@ import tech.ydb.apps.service.ScriptService;
  */
 @EnableRetry
 @EnableAsync
+@EnableScheduling
 @EnableConfigurationProperties(AppConfig.class)
 @SpringBootApplication
 public class Application implements CommandLineRunner {
@@ -62,6 +65,7 @@ public class Application implements CommandLineRunner {
         isStopped = true;
         logger.info("CLI app is waiting for finishing");
         ctx.getBean(PaymentMachine.class).stop();
+        ctx.getBean(ArchiveMachine.class).stop();
         logger.info("CLI app has finished");
     }
 
