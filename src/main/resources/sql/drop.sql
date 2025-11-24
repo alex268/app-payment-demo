@@ -4,5 +4,6 @@ DROP TABLE IF EXISTS saldo;
 DROP TABLE IF EXISTS saldo_config;
 DROP TABLE IF EXISTS saldo_update;
 DROP TABLE IF EXISTS transaction;
+DROP TABLE IF EXISTS transaction_archive;
 
 

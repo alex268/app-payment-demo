@@ -81,3 +81,26 @@ CREATE TABLE saldo_update (
     AUTO_PARTITIONING_MAX_PARTITIONS_COUNT = 200,
     PARTITION_AT_KEYS = ((1, 2), (1, 3), (1, 4), (2, 1), (2, 2), (3), (4), (5), (6), (25), (44), (63), (82))
 );
+
+CREATE TABLE transaction_archive (
+    tx_id Text NOT NULL,
+
+    acc_a Int64 NOT NULL,
+    acc_b Int64 NOT NULL,
+    acc_part_a Int32 NOT NULL,
+    acc_part_b Int32 NOT NULL,
+
+    amount Decimal(22,9),
+
+    input_ts Timestamp,
+    accepted_ts Timestamp,
+    processed_ts Timestamp,
+
+    PRIMARY KEY(processed_ts, tx_id)
+) WITH (
+    AUTO_PARTITIONING_BY_SIZE = ENABLED,
+    AUTO_PARTITIONING_BY_LOAD = ENABLED,
+    AUTO_PARTITIONING_PARTITION_SIZE_MB = 2000,
+    AUTO_PARTITIONING_MIN_PARTITIONS_COUNT = 100,
+    AUTO_PARTITIONING_MAX_PARTITIONS_COUNT = 200
+);
