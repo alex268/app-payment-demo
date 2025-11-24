@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import tech.ydb.apps.entity.SaldoKey;
+import tech.ydb.apps.entity.Transaction;
 import tech.ydb.apps.model.PaymentTask;
 import tech.ydb.apps.service.ConfigService;
 import tech.ydb.apps.service.PaymentService;
@@ -63,10 +64,16 @@ public class PaymentServiceFake implements PaymentService {
         // Nothing
     }
 
+    @Override
+    public void archiveTransactions(List<Transaction> batch) {
+        // Nothing
+    }
+
 //    @PreDestroy
 //    public void close() {
 //        System.out.println("TOTAL = " + total.longValue());
 //        System.out.println("A1 = " + accA.longValue());
 //        System.out.println("B1 = " + accB.longValue());
 //    }
+
 }

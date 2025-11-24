@@ -18,9 +18,11 @@ import tech.ydb.apps.entity.Saldo;
 import tech.ydb.apps.entity.SaldoKey;
 import tech.ydb.apps.entity.SaldoUpdate;
 import tech.ydb.apps.entity.Transaction;
+import tech.ydb.apps.entity.TransactionArchive;
 import tech.ydb.apps.model.PaymentTask;
 import tech.ydb.apps.repository.SaldoRepo;
 import tech.ydb.apps.repository.SaldoUpdateRepo;
+import tech.ydb.apps.repository.TransactionArchiveRepo;
 import tech.ydb.apps.repository.TransactionRepo;
 import tech.ydb.apps.service.ConfigService;
 import tech.ydb.apps.service.PaymentService;
@@ -36,15 +38,17 @@ public class PaymentServiceDefault implements PaymentService {
     private final SaldoRepo saldoRepo;
     private final SaldoUpdateRepo updatesRepo;
     private final TransactionRepo transactionRepo;
+    private final TransactionArchiveRepo archiveRepo;
     private final int saldoShiftMs;
 
 
     public PaymentServiceDefault(AppConfig appConfig, ConfigService config, SaldoRepo saldos, SaldoUpdateRepo updates,
-            TransactionRepo transactions) {
+            TransactionRepo transactions, TransactionArchiveRepo archives) {
         this.config = config;
         this.saldoRepo = saldos;
         this.updatesRepo = updates;
         this.transactionRepo = transactions;
+        this.archiveRepo = archives;
         this.saldoShiftMs = appConfig.getSaldoShiftMs();
     }
 
@@ -115,5 +119,18 @@ public class PaymentServiceDefault implements PaymentService {
 
         saldoRepo.saveAll(allSaldos);
         updatesRepo.deleteAll(updatesToDelete);
+    }
+
+    @Override
+    @Transactional
+    public void archiveTransactions(List<Transaction> batch) {
+        List<TransactionArchive> archive = new ArrayList<>();
+
+        for (Transaction tx: batch) {
+            archive.add(new TransactionArchive(tx));
+        }
+
+        transactionRepo.deleteAllInBatch(batch);
+        archiveRepo.saveAll(archive);
     }
 }

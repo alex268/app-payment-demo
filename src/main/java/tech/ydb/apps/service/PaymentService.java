@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import tech.ydb.apps.entity.SaldoKey;
+import tech.ydb.apps.entity.Transaction;
 import tech.ydb.apps.model.PaymentTask;
 
 /**
@@ -16,6 +17,6 @@ public interface PaymentService {
     String findProcessor(SaldoKey key);
 
     void executePayments(Instant accepted, List<PaymentTask> batch);
-
+    void archiveTransactions(List<Transaction> batch);
     void completeSaldoUpdates();
 }

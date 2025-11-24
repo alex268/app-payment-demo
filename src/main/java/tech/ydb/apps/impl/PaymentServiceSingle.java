@@ -17,10 +17,13 @@ import tech.ydb.apps.annotation.YdbRetryable;
 import tech.ydb.apps.entity.Saldo;
 import tech.ydb.apps.entity.SaldoKey;
 import tech.ydb.apps.entity.Transaction;
+import tech.ydb.apps.entity.TransactionArchive;
 import tech.ydb.apps.model.PaymentTask;
 import tech.ydb.apps.repository.SaldoRepo;
+import tech.ydb.apps.repository.TransactionArchiveRepo;
 import tech.ydb.apps.repository.TransactionRepo;
 import tech.ydb.apps.service.PaymentService;
+import tech.ydb.jdbc.YdbTracer;
 
 /**
  *
@@ -29,12 +32,14 @@ import tech.ydb.apps.service.PaymentService;
 @Service
 @Profile("single")
 public class PaymentServiceSingle implements PaymentService {
-    protected final SaldoRepo saldoRepo;
-    protected final TransactionRepo transactionRepo;
+    private final SaldoRepo saldoRepo;
+    private final TransactionRepo transactionRepo;
+    private final TransactionArchiveRepo archiveRepo;
 
-    public PaymentServiceSingle(SaldoRepo saldos, TransactionRepo transactions) {
+    public PaymentServiceSingle(SaldoRepo saldos, TransactionRepo transactions, TransactionArchiveRepo archives) {
         this.saldoRepo = saldos;
         this.transactionRepo = transactions;
+        this.archiveRepo = archives;
     }
 
     @Override
@@ -80,5 +85,19 @@ public class PaymentServiceSingle implements PaymentService {
     @Override
     public void completeSaldoUpdates() {
         // Nothing
+    }
+
+    @Override
+    @Transactional
+    public void archiveTransactions(List<Transaction> batch) {
+        YdbTracer.current().markToPrint("archive");
+
+        List<TransactionArchive> archive = new ArrayList<>();
+        for (Transaction tx: batch) {
+            archive.add(new TransactionArchive(tx));
+        }
+
+        transactionRepo.deleteAll(batch);
+        archiveRepo.saveAll(archive);
     }
 }
